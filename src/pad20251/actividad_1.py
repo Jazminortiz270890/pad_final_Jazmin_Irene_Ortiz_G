@@ -6,14 +6,17 @@ from pathlib import Path
 
 class Ingestiones():
     def __init__(self):
-        self.ruta_static=os.path.join("src","pad20251","static")
-        self.ruta_actual= str(patch.cwd())
-        self.ruta_static="{}/src/pad20251/static/".format(self.ruta_actual)
-        directorio= os.path.dirname(self.ruta_actual)
-       
-        if not os.path.exists(directorio):
-            os.makedirs(directorio, exist_ok=True) 
-        
+       # obtener la ruta actual
+        self.ruta_actual= str(Path.cwd())
+
+        #definir la carpeta donde se guardarán los archivos
+        self.ruta_static=os.path.join(self.ruta_actual,"src","pad20251","static")
+        self.ruta_json=os.path.join(self.ruta_static,"json")
+
+        # Crear las carpetas si no existen
+        os.makedirs(self.ruta_json, exist_ok=True)
+
+              
     def leer_api(self,url):
         try:
             response = requests.get(url, timeout=10)
@@ -33,11 +36,11 @@ class Ingestiones():
                 json.dump(datos, archivo, indent=4, ensure_ascii=False)
             print(f"Datos guardados en {ruta_completa}")
         except Exception as e:
-            print("Error al escribir el archivo JSON: {e}") 
+            print(f"Error al escribir el archivo JSON: {e}") 
         
 # creacion de la instancia 
 ingestion = Ingestiones ()
-datos_json = ingestion.leer_api("https://hp-api.onrender.com/api/characters") 
+datos_json = ingestion.leer_api("https://swapi.dev/api/films/") 
 
 # imprimir información 
 print ("esta es la ruta estatica:", ingestion.ruta_static) 
