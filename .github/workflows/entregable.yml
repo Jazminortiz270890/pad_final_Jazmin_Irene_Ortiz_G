@@ -10,7 +10,6 @@ jobs:
     permissions:
       contents: write
 
-
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
@@ -19,18 +18,27 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: '3.9.2'
-      - name: paso1 - crea entorno virtual
+
+      - name: Create virtual environment
         run: python -m venv venv
-      - name: paso2 - activar entorno virtual
-        run: ./venv/Scripts/activate   
-      - name: paso3 - actualizar pip
-        run: pip install --upgrade pip
-      - name: paso4 - instalar dependencias
-        run: pip install -e .
-      - name: paso5 - Ejecutar script
-        run: python src/pad20251/actividad_1.py
-      - name: paso 6 - ejecutar script  
-        run: python src/pad20251/actividad_2.py
+
+      - name: Activate virtual environment & install dependencies
+        shell: bash
+        run: |
+          source venv/Scripts/activate
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install requests  # Asegura que 'requests' esté instalado
+
+      - name: Run actividad_1
+        shell: bash
+        run: |
+          source venv/Scripts/activate && python src/pad20251/actividad_1.py
+
+      - name: Run actividad_2
+        shell: bash
+        run: |
+          source venv/Scripts/activate && python src/pad20251/actividad_2.py
 
       - name: Commit and Push changes
         uses: stefanzweifel/git-auto-commit-action@v5
@@ -39,4 +47,3 @@ jobs:
           commit_user_name: Jazmin Ortiz [GitHub Actions]
           commit_user_email: jazmin.ortiz@est.iudigital.edu.co
           commit_author: Jazmin Ortiz <jazmin.ortiz@est.iudigital.edu.co>
-
