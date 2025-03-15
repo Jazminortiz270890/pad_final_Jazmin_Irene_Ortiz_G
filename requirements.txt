@@ -1,1 +1,5 @@
-matplotlib/nnumpy/npandas/nrequests
+requests
+numpy
+matplotlib
+pandas
+openpyxl
